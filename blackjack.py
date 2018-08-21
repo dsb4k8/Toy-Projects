@@ -62,20 +62,10 @@ class player:
                     # print int(n.rank)
                     result = result + int(n.rank)
             return result
-            # return  int(self.hand[0].rank)
 
 
 
 
-
-
-		# return "%s" %(self.hand[0], self.hand[1])
-# class dealer(player):
-# 	def __init__(self,WholeDeck):
-# 		self.hand = WholeDeck.contents[-2:]
-# 		self.hit = self.hand.append(WholeDeck.top)
-# 	def __repr__(self):
-# 		return "{}, {}".format(self.hand[0], blocker)
 class dealer(player):
         def __repr__(self):
             return "{}".format(self.hand[0], blocker)
@@ -102,17 +92,4 @@ if __name__=="__main__":
         p1 = player(play_deck)
         print p1
         print len(p1.hand)
-
-
-	# deck= stack(cardlist)
-        # deck.contents = cardlist
-	# print deck
-	# deck.shuffle()
-	# print
-	# print deck
-	# print 
-	# p1 = player(deck)
-        # print
-        # # print "p1's hand: {}".format(p1.hand)
-        # print p1.hand
 
