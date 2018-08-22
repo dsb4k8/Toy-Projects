@@ -25,31 +25,17 @@ class stack:
 			shuffle(self.contents)
 		return self.contents
 
-	# def deal(self):
-	# 	#deal out 5 cards
-	# 	if len(self.contents) >= 2:
-	# 		for i in range(20):
-	# 			shuffle(self.contents)
-	# 		self.contents = self.contents[:-2]
-
-	# 		hand = self.contents[-2:]
-	# 		return hand
-	# 	else:
-	# 		print "< one hand remains in the deck. EMPTY"
-
 class player:
 	def __init__(self, WholeDeck):
                 self.WD = WholeDeck
                 self.hand = self.WD.contents[-2:]
                 
         	self.WD.contents = self.WD.contents[:-2]
-		# self.hit = self.hand.append(WholeDeck.top)
 	def __repr__(self):
            return "%s, Total: %d " %(self.hand[:len(self.hand)], self.total())
 
         def total(self):
             result = 0
-            result_w_ace = ()
             for n in self.hand[:len(self.hand)]:
                 if n.rank == "J" or n.rank == "Q" or n.rank == "K":
                    result = result + 10
@@ -57,41 +43,64 @@ class player:
                     if result + 11 <= 21:
                         result  = result + 11
                     else:       
-                        result_w_ace  = (result + 1, result + 11)
-                        return result_w_ace
+                        result = result + 1
                 else:
-                    # print int(n.rank)
                     result = result + int(n.rank)
             return result
 
         def hit(self):
             
             l = self.hand
-            # print "orig: {}".format(l)
             added = self.WD.contents[-1]
             self.WD.contents = self.WD.contents[:-1]
             result = l.append(added)
-            # print "ADDED: {}".format(added)
-            # print "L: {}".format(l)
-            # print "Result: {}".format(result)
-
-
-            # self.hand = self.hand.append(
-#             l.append(WholdDeck.contents.top())
-            # WholeDeck.contents = WholeDeck.contents[:-1]
-            
-            # return l
-            # print l
             self.hand = l
             return l
+        def is_busted(self):
+            return self.total() > 21
             
            
 
 class dealer(player):
         def __repr__(self):
-            return "{}".format(self.hand[0], blocker)
+            return "{}, Total: {}".format(self.hand, self.total())
+        def showing_before_play(self):
+            return "{},{}, Showing {}".format(self.hand[:len(self.hand)-1], blocker, self.dealer_total())
+        def dealer_total(self):
+            result = 0
+            faces = ["J","Q","K"]
+            ace = "A"
+            for card in self.hand:
+                if card.rank in faces:
+                    result +=10
+                elif card.rank == ace:
+                    if result + 11 <= 21:
+                        result +=11
+                    else:
+                        result += 1
+                else:
+                    result += card.rank
+            return result 
 
 
+        def total(self):
+            result = 0
+            for n in self.hand[:len(self.hand)]:
+                if n.rank == "J" or n.rank == "Q" or n.rank == "K":
+                   result = result + 10
+                elif n.rank == "A":
+                    if result + 11 <= 21:
+                        result  = result + 11
+                    else:       
+                        result = result + 1
+                else:
+                    result = result + int(n.rank)
+            return result
+
+        
+
+
+# play()
             
 if __name__=="__main__":
 
@@ -107,19 +116,32 @@ if __name__=="__main__":
 			cardlist.append(currentcard)
         play_deck = stack(cardlist)
         discard_deck = stack(empty)
-        # print deck
         play_deck.shuffle()
-        # print deck
         p1 = player(play_deck)
-        print p1
-        # print len(p1.hand)
-        p1.hit()
+        print "PLAYER!________________________________"
         print 
         print p1
+        print "Busted: {}".format(p1.is_busted())        
+        p1.hit()
+        print 
+        
+        print p1
+        print "Busted: {}".format(p1.is_busted())        
         print 
         p1.hit()
         print p1
-        # print play_deck.contents[-1] 
-        # print p1
+        print "Busted: {}".format(p1.is_busted())
+        p1.hit()
+        print
+        print p1
+        print "Busted: {}".format(p1.is_busted())
+        print  "_______________________________________"
 
+        dlr = dealer(play_deck)
+        print "Dealer: ________________________________"
+        print dlr.showing_before_play()
+        dlr.hit()
+        dlr.hit()
+        print dlr
+        print "________________________________________"
 
