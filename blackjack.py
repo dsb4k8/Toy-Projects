@@ -39,17 +39,18 @@ class stack:
 
 class player:
 	def __init__(self, WholeDeck):
-                self.hand = WholeDeck.contents[-2:]
+                self.WD = WholeDeck
+                self.hand = self.WD.contents[-2:]
                 
-        	WholeDeck.contents = WholeDeck.contents[:-2]
-		self.hit = self.hand.append(WholeDeck.top)
+        	self.WD.contents = self.WD.contents[:-2]
+		# self.hit = self.hand.append(WholeDeck.top)
 	def __repr__(self):
-           return "%s, Total: %d " %(self.hand[:len(self.hand)-1], self.total())
+           return "%s, Total: %d " %(self.hand[:len(self.hand)], self.total())
 
         def total(self):
             result = 0
             result_w_ace = ()
-            for n in self.hand[:len(self.hand)-1]:
+            for n in self.hand[:len(self.hand)]:
                 if n.rank == "J" or n.rank == "Q" or n.rank == "K":
                    result = result + 10
                 elif n.rank == "A":
@@ -63,8 +64,28 @@ class player:
                     result = result + int(n.rank)
             return result
 
+        def hit(self):
+            
+            l = self.hand
+            # print "orig: {}".format(l)
+            added = self.WD.contents[-1]
+            self.WD.contents = self.WD.contents[:-1]
+            result = l.append(added)
+            # print "ADDED: {}".format(added)
+            # print "L: {}".format(l)
+            # print "Result: {}".format(result)
 
 
+            # self.hand = self.hand.append(
+#             l.append(WholdDeck.contents.top())
+            # WholeDeck.contents = WholeDeck.contents[:-1]
+            
+            # return l
+            # print l
+            self.hand = l
+            return l
+            
+           
 
 class dealer(player):
         def __repr__(self):
@@ -91,5 +112,14 @@ if __name__=="__main__":
         # print deck
         p1 = player(play_deck)
         print p1
-        print len(p1.hand)
+        # print len(p1.hand)
+        p1.hit()
+        print 
+        print p1
+        print 
+        p1.hit()
+        print p1
+        # print play_deck.contents[-1] 
+        # print p1
+
 
