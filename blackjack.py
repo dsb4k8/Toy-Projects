@@ -62,25 +62,44 @@ class player:
            
 
 class dealer(player):
+        d = {
+                "K": 10,
+                "J": 10,
+                "Q": 10,
+                "A": 11
+                }
+
         def __repr__(self):
             return "{}, Total: {}".format(self.hand, self.total())
         def showing_before_play(self):
             return "{},{}, Showing {}".format(self.hand[:len(self.hand)-1], blocker, self.dealer_total())
         def dealer_total(self):
-            result = 0
+            result = []
             faces = ["J","Q","K"]
             ace = "A"
             for card in self.hand:
-                if card.rank in faces:
-                    result +=10
-                elif card.rank == ace:
-                    if result + 11 <= 21:
-                        result +=11
-                    else:
-                        result += 1
+                if card.rank in self.d.keys():
+                    if self.d.get(card.rank) == 10:
+                        result.append(10)
+                    elif card.rank == "A":
+                        if sum(result) + 11 <= 21:
+                            result.append(11)
+                        else:
+                            result.append(1)
+
                 else:
-                    result += card.rank
-            return result 
+                    result.append(card.rank)
+            return result
+
+#                     result +=10
+                # elif card.rank == ace:
+                    # if result + 11 <= 21:
+                        # result +=11
+                    # else:
+                        # result += 1
+                # else:
+                    # result += card.rank
+            # return result 
 
 
         def total(self):
