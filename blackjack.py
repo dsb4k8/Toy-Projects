@@ -72,11 +72,11 @@ class dealer(player):
         def __repr__(self):
             return "{}, Total: {}".format(self.hand, self.total())
         def showing_before_play(self):
-            return "{},{}, Showing {}".format(self.hand[:len(self.hand)-1], blocker, self.dealer_total())
+            return "{},{}, Showing {}".format(self.hand[:len(self.hand)-1], blocker, self.dealer_total()[0])
         def dealer_total(self):
             result = []
-            faces = ["J","Q","K"]
-            ace = "A"
+            # faces = ["J","Q","K"]
+            # ace = "A"
             for card in self.hand:
                 if card.rank in self.d.keys():
                     if self.d.get(card.rank) == 10:
@@ -119,48 +119,78 @@ class dealer(player):
         
 
 
-# play()
-            
-if __name__=="__main__":
+def play():
 
-	ranks = [2,3,4,5,6,7,8,9,10,"J","Q","K","A"]
-	Suits = ["Hearts","Clubs","Diamonds","Spades"]
-
+        ranks = [2,3,4,5,6,7,8,9,10,"J","Q","K","A"]
+        Suits = ["Hearts","Clubs","Diamonds","Spades"]
 	cardlist = []
         empty = []
-
+        #populate new play_deck
 	for suit in Suits:
 		for rank in ranks:
 			currentcard = card(rank, suit)
 			cardlist.append(currentcard)
         play_deck = stack(cardlist)
+        for i in range(10):
+            play_deck.shuffle()
         discard_deck = stack(empty)
-        play_deck.shuffle()
+        # play_deck.shuffle()
         p1 = player(play_deck)
-        print "PLAYER!________________________________"
-        print 
-        print p1
-        print "Busted: {}".format(p1.is_busted())        
-        p1.hit()
-        print 
-        
-        print p1
-        print "Busted: {}".format(p1.is_busted())        
-        print 
-        p1.hit()
-        print p1
-        print "Busted: {}".format(p1.is_busted())
-        p1.hit()
-        print
-        print p1
-        print "Busted: {}".format(p1.is_busted())
-        print  "_______________________________________"
-
         dlr = dealer(play_deck)
-        print "Dealer: ________________________________"
-        print dlr.showing_before_play()
-        dlr.hit()
-        dlr.hit()
-        print dlr
-        print "________________________________________"
+
+        # Game Rules
+        while True:
+            print "Player Hand: {}".format(p1)
+            print "Dealer Hand: {}".format(dlr.showing_before_play())
+            print 
+            give_option = input('Hit(1) or Stay(0): ') %(p1.total())
+            if give_option == 1:
+                p1.hit()
+                print p1
+            elif give_option == 0:
+                pass
+            break
+
+
+
+
+
+            
+if __name__=="__main__":
+
+    play()
+
+       #  ranks = [2,3,4,5,6,7,8,9,10,"J","Q","K","A"]
+	# Suits = ["Hearts","Clubs","Diamonds","Spades"]
+
+        # play_deck = stack(cardlist)
+        # discard_deck = stack(empty)
+        # play_deck.shuffle()
+        # p1 = player(play_deck)
+        # print "PLAYER!________________________________"
+        # print 
+        # print p1
+        # print "Busted: {}".format(p1.is_busted())        
+        # p1.hit()
+        # print 
+        
+        # print p1
+        # print "Busted: {}".format(p1.is_busted())        
+        # print 
+        # p1.hit()
+        # print p1
+        # print "Busted: {}".format(p1.is_busted())
+        # p1.hit()
+        # print
+        # print p1
+        # print "Busted: {}".format(p1.is_busted())
+        # print  "_______________________________________"
+
+        # dlr = dealer(play_deck)
+        # print "Dealer: ________________________________"
+        # print dlr.showing_before_play()
+        # dlr.hit()
+        # dlr.hit()
+        # print dlr
+        # print "________________________________________"
 
