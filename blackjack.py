@@ -18,12 +18,17 @@ class stack:
 		self.size = len(self.contents)
 	def __repr__(self):
 		return "{}".format([x for x in self.contents])
+        def __len__(self):
+                return self.size
 	def top(self):
 		return self.contents[-1]
 	def shuffle(self):
 		for i in range(200):
 			shuffle(self.contents)
 		return self.contents
+        def is_full(self):
+           return self.size == 52
+                
 
 class player:
 	def __init__(self, WholeDeck):
@@ -53,11 +58,22 @@ class player:
             l = self.hand
             added = self.WD.contents[-1]
             self.WD.contents = self.WD.contents[:-1]
+            self.WD.size -= 1
             result = l.append(added)
             self.hand = l
             return l
+
         def is_busted(self):
             return self.total() > 21
+        def cleanup(self,discard_deck):
+            if self.is_busted():
+                for i in self.hand:
+                    discard_deck.contents.append(i)
+                print "Discard deck: {}".format(discard_deck.contents)
+                self.hand = []
+
+                
+
             
            
 
@@ -91,17 +107,6 @@ class dealer(player):
                     result.append(card.rank)
             return result
 
-#                     result +=10
-                # elif card.rank == ace:
-                    # if result + 11 <= 21:
-                        # result +=11
-                    # else:
-                        # result += 1
-                # else:
-                    # result += card.rank
-            # return result 
-
-
         def total(self):
             result = 0
             for n in self.hand[:len(self.hand)]:
@@ -121,6 +126,24 @@ class dealer(player):
 
 def play():
 
+    # initialize a player and dealer
+    # dealer's default show is one card up one card down
+    # player's default is init in definition
+    # while True:
+        # ask user if they want to hit or stay
+        # display user hand and total
+        # if hit:
+            # if player.busted:
+                # break
+            # elif not player.busted:
+                # continue
+        # if player stays:
+            # break
+        # else:
+            # continue
+    # while dealer's total is less than 17:
+        # dealer hits
+
         ranks = [2,3,4,5,6,7,8,9,10,"J","Q","K","A"]
         Suits = ["Hearts","Clubs","Diamonds","Spades"]
 	cardlist = []
@@ -137,7 +160,9 @@ def play():
         # play_deck.shuffle()
         p1 = player(play_deck)
         dlr = dealer(play_deck)
-
+        print 
+        print len(play_deck)
+        print 
         # Game Rules
         while True:
             print "Player Hand: {}".format(p1)
@@ -146,51 +171,21 @@ def play():
             give_option = input('Hit(1) or Stay(0): ') %(p1.total())
             if give_option == 1:
                 p1.hit()
+                print len(play_deck)
+                
                 print p1
+                if p1.is_busted():
+                    print "Busted"
+                    p1.cleanup(discard_deck)
+                    break
+                elif p1.total == 21:
+                    print "Black Jack!"
+                else:
+                    continue
             elif give_option == 0:
-                pass
-            break
+                break
 
-
-
-
-
-            
 if __name__=="__main__":
 
     play()
-
-       #  ranks = [2,3,4,5,6,7,8,9,10,"J","Q","K","A"]
-	# Suits = ["Hearts","Clubs","Diamonds","Spades"]
-
-        # play_deck = stack(cardlist)
-        # discard_deck = stack(empty)
-        # play_deck.shuffle()
-        # p1 = player(play_deck)
-        # print "PLAYER!________________________________"
-        # print 
-        # print p1
-        # print "Busted: {}".format(p1.is_busted())        
-        # p1.hit()
-        # print 
-        
-        # print p1
-        # print "Busted: {}".format(p1.is_busted())        
-        # print 
-        # p1.hit()
-        # print p1
-        # print "Busted: {}".format(p1.is_busted())
-        # p1.hit()
-        # print
-        # print p1
-        # print "Busted: {}".format(p1.is_busted())
-        # print  "_______________________________________"
-
-        # dlr = dealer(play_deck)
-        # print "Dealer: ________________________________"
-        # print dlr.showing_before_play()
-        # dlr.hit()
-        # dlr.hit()
-        # print dlr
-        # print "________________________________________"
 
