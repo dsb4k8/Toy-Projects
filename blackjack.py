@@ -1,5 +1,25 @@
 from random import shuffle
 
+#Algorithm:
+# initialize a player and dealer
+# dealer's default show is one card up one card down
+# player's default is init in definition
+# while True:
+    # ask user if they want to hit or stay
+    # display user hand and total
+    # if hit:
+    # if player.busted:
+    # break
+    # elif not player.busted:
+        # continue
+    # if player stays:
+        # break
+    # else:
+        # continue
+    # while dealer's total is less than 17:
+        # dealer hits
+
+
 #make a deck of cards
 blocker = "***************"
 class card:
@@ -125,24 +145,6 @@ class dealer(player):
 
 
 def play():
-
-    # initialize a player and dealer
-    # dealer's default show is one card up one card down
-    # player's default is init in definition
-    # while True:
-        # ask user if they want to hit or stay
-        # display user hand and total
-        # if hit:
-            # if player.busted:
-                # break
-            # elif not player.busted:
-                # continue
-        # if player stays:
-            # break
-        # else:
-            # continue
-    # while dealer's total is less than 17:
-        # dealer hits
 
         ranks = [2,3,4,5,6,7,8,9,10,"J","Q","K","A"]
         Suits = ["Hearts","Clubs","Diamonds","Spades"]
