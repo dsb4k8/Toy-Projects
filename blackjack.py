@@ -92,10 +92,6 @@ class player:
                 print "Discard deck: {}".format(discard_deck.contents)
                 self.hand = []
 
-                
-
-            
-           
 
 class dealer(player):
         d = {
@@ -162,9 +158,17 @@ def play():
         # play_deck.shuffle()
         p1 = player(play_deck)
         dlr = dealer(play_deck)
-        print 
-        print len(play_deck)
-        print 
+        print "__________________________________________________________"
+        print "Play_Deck: {}".format(len(play_deck))
+        print "Discarded: {}".format(len(discard_deck))
+
+        print"___________________________________________________________" 
+        
+        #Using counter for for 2 player game. (for 2 players, if counter % 2 == 0 -> even, it is the DEALERS MOVE,         This means that c = 1 == p1, c = 2 == dlr... c = p1+n % 2 == p1)
+
+        
+        COUNT = 1 
+        
         # Game Rules
         while True:
             print "Player Hand: {}".format(p1)
@@ -173,20 +177,33 @@ def play():
             give_option = input('Hit(1) or Stay(0): ') %(p1.total())
             if give_option == 1:
                 p1.hit()
-                print len(play_deck)
-                
-                print p1
-                if p1.is_busted():
-                    print "Busted"
-                    p1.cleanup(discard_deck)
-                    break
-                elif p1.total == 21:
-                    print "Black Jack!"
-                else:
-                    continue
-            elif give_option == 0:
+            print "__________________________________________________________"
+            print "Play_Deck: {}".format(len(play_deck))
+            print "Discarded: {}".format(len(discard_deck))
+            print"___________________________________________________________" 
+ 
+            print p1
+            #Play logic:
+            #If player has over 21
+            if p1.is_busted():
+                print "Busted."
+                #add players hand to empty / lesser discard deck
+                p1.cleanup(discard_deck)
+                COUNT +=1
                 break
+                
+            # If you win your hand:
+            elif p1.total == 21:
+                print "Black Jack!"
+            # If you want to stay/ dont want to risk busting
+            elif give_option == 0:
+                COUNT +=1
+                break 
+            else:
+                continue 
+            print("Discarded: {}".format(discard_deck))
 
+            
 if __name__=="__main__":
 
     play()
