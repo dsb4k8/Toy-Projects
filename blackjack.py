@@ -213,7 +213,7 @@ def play():
             # If you want to stay/ dont want to risk busting
                 elif give_option == 0:
                     COUNT +=1 
-                    continue
+                    # continue
                 else:
                     continue
                 print("Discarded: {}".format(discard_deck))
@@ -233,7 +233,11 @@ def play():
                     dlr.hit()
                     print "{}, Total: {}".format(dlr.hand, dlr.total())
                     if dlr.is_busted():
-                        print "Dealer Busted... You won"
+                        time.sleep(1)
+                        print "Dealer Busted... You won!"
+                        print
+                        print
+                        print "___NEW ROUND ___"
                         COUNT +=1
                         break
                     else:
@@ -242,8 +246,8 @@ def play():
                         continue
 #                 print "Dealer did not bust... Total: {}".format(dlr.total())
                 # COUNT +=1
-                break
-                    
+                COUNT += 1
+                continue                    
                
 
 
