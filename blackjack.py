@@ -1,4 +1,5 @@
 from random import shuffle
+import time
 
 #Algorithm:
 # initialize a player and dealer
@@ -91,6 +92,8 @@ class player:
                     discard_deck.contents.append(i)
                 print "Discard deck: {}".format(discard_deck.contents)
                 self.hand = []
+        def has_empty_hand(self):
+            return self.hand == []
 
 
 class dealer(player):
@@ -136,6 +139,8 @@ class dealer(player):
                 else:
                     result = result + int(n.rank)
             return result
+        def can_hit(self):
+            return self.total() < 17
 
         
 
@@ -164,44 +169,111 @@ def play():
 
         print"___________________________________________________________" 
         
-        #Using counter for for 2 player game. (for 2 players, if counter % 2 == 0 -> even, it is the DEALERS MOVE,         This means that c = 1 == p1, c = 2 == dlr... c = p1+n % 2 == p1)
+        #Using counter for for 2 player game. (for 2 players, if counter % 2 == 0 -> even, 
+        # it is the DEALERS MOVE,This means that c = 1 == p1, c = 2 == dlr... c = p1+n % 2 == p1)
 
         
         COUNT = 1 
         
         # Game Rules
         while True:
-            print "Player Hand: {}".format(p1)
-            print "Dealer Hand: {}".format(dlr.showing_before_play())
-            print 
-            give_option = input('Hit(1) or Stay(0): ') %(p1.total())
-            if give_option == 1:
-                p1.hit()
-            print "__________________________________________________________"
-            print "Play_Deck: {}".format(len(play_deck))
-            print "Discarded: {}".format(len(discard_deck))
-            print"___________________________________________________________" 
+            if COUNT % 2 != 0:
+                if p1.has_empty_hand():
+                    p1.hit()
+                    p1.hit()
+                    print "Player had empty hand. New hand -> {}".format(p1.hand)
+                print "Player Hand: {}".format(p1)
+                print "Dealer Hand: {}".format(dlr.showing_before_play())
+                print 
+                give_option = input('Hit(1) or Stay(0): ')
+                if give_option == 1:
+                    p1.hit()
+                print "__________________________________________________________"
+                # print "Play_Deck: {}".format(len(play_deck))
+                # print "Discarded: {}".format(len(discard_deck))
+                print"___________________________________________________________" 
  
-            print p1
+                # print p1
+
+
+
             #Play logic:
             #If player has over 21
-            if p1.is_busted():
-                print "Busted."
+                if p1.is_busted():
+                    print "Busted."
+                    COUNT +=1
+
                 #add players hand to empty / lesser discard deck
-                p1.cleanup(discard_deck)
-                COUNT +=1
-                break
+                    p1.cleanup(discard_deck)
+                    continue
                 
             # If you win your hand:
-            elif p1.total == 21:
-                print "Black Jack!"
+                elif p1.total == 21:
+                    print "Black Jack!"
             # If you want to stay/ dont want to risk busting
-            elif give_option == 0:
-                COUNT +=1
-                break 
+                elif give_option == 0:
+                    COUNT +=1 
+                    continue
+                else:
+                    continue
+                print("Discarded: {}".format(discard_deck))
+
+
+           # For dealer
             else:
-                continue 
-            print("Discarded: {}".format(discard_deck))
+
+                print "+Dealers HAND:"
+                print 
+                print "Player Hand: {}".format(p1)
+                print "Dealer Hand: {}".format(dlr.showing_before_play())
+                print 
+                while dlr.can_hit():
+                    time.sleep(1)
+                    print "dlr had to hit"
+                    dlr.hit()
+                    print "{}, Total: {}".format(dlr.hand, dlr.total())
+                    if dlr.is_busted():
+                        print "Dealer Busted... You won"
+                        COUNT +=1
+                        break
+                    else:
+                        time.sleep(1)
+                        print "Dealer did not bust... Total: {}".format(dlr.total())
+                        continue
+#                 print "Dealer did not bust... Total: {}".format(dlr.total())
+                # COUNT +=1
+                break
+                    
+               
+
+
+                # give_option = input('Hit(1) or Stay(0): ') %(dlr.total())
+                # if give_option == 1:
+                    # dlr.hit()
+                print "__________________________________________________________"
+                # print "Play_Deck: {}".format(len(play_deck))
+                # print "Discarded: {}".format(len(discard_deck))
+                print"___________________________________________________________" 
+ 
+#                 print p1
+            # #Play logic:
+            # #If player has over 21
+                # if p1.is_busted():
+                    # print "Busted."
+                # #add players hand to empty / lesser discard deck
+                    # p1.cleanup(discard_deck)
+                    # COUNT +=1
+                    # break
+                
+            # # If you win your hand:
+                # elif p1.total == 21:
+                    # print "Black Jack!"
+            # # If you want to stay/ dont want to risk busting
+                # elif give_option == 0:
+                    # break 
+                # else:
+                    # continue
+
 
             
 if __name__=="__main__":
