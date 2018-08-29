@@ -178,6 +178,7 @@ def play():
         # Game Rules
         while True:
             if COUNT % 2 != 0:
+            # p1's move
                 if p1.has_empty_hand():
                     p1.hit()
                     p1.hit()
@@ -200,6 +201,7 @@ def play():
             #Play logic:
             #If player has over 21
                 if p1.is_busted():
+                    time.sleep(1)
                     print "Busted."
                     COUNT +=1
 
@@ -212,7 +214,7 @@ def play():
                     print "Black Jack!"
             # If you want to stay/ dont want to risk busting
                 elif give_option == 0:
-                    COUNT +=1 
+                    COUNT +=1
                     # continue
                 else:
                     continue
@@ -238,6 +240,15 @@ def play():
                         print
                         print
                         print "___NEW ROUND ___"
+
+
+
+
+
+
+                        dlr.cleanup(discard_deck)
+
+
                         COUNT +=1
                         break
                     else:
@@ -246,37 +257,37 @@ def play():
                         continue
 #                 print "Dealer did not bust... Total: {}".format(dlr.total())
                 # COUNT +=1
-                COUNT += 1
-                continue                    
-               
-
-
+                                                    
                 # give_option = input('Hit(1) or Stay(0): ') %(dlr.total())
                 # if give_option == 1:
                     # dlr.hit()
                 print "__________________________________________________________"
+                
+
+                print 
+                time.sleep(1)
+                if p1 > dlr and not p1.is_busted():
+                    print "Player 1 won :)"
+                    print
+                    print "___NEW ROUND ___"
+                    continue
+                elif dlr > p1 and not dlr.is_busted():
+                    print "Dealer won :("
+                    print
+                    print "___NEW ROUND ___"
+                    COUNT +=1
+                    continue
+                else:
+                    print "Draw Game"
+                    print
+                    print "___NEW ROUND ___"
+                    
+                # continue
                 # print "Play_Deck: {}".format(len(play_deck))
                 # print "Discarded: {}".format(len(discard_deck))
-                print"___________________________________________________________" 
- 
-#                 print p1
-            # #Play logic:
-            # #If player has over 21
-                # if p1.is_busted():
-                    # print "Busted."
-                # #add players hand to empty / lesser discard deck
-                    # p1.cleanup(discard_deck)
-                    # COUNT +=1
-                    # break
+                print"___________________________________________________________"
                 
-            # # If you win your hand:
-                # elif p1.total == 21:
-                    # print "Black Jack!"
-            # # If you want to stay/ dont want to risk busting
-                # elif give_option == 0:
-                    # break 
-                # else:
-                    # continue
+
 
 
             
