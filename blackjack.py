@@ -208,7 +208,6 @@ def play():
             print "P1 : {}".format(p1)
             print "DLR: {}".format(dlr.showing_before_play())
             hit =  input("HIT?  Yes(1), No(0): ")
-
             
             p1_round_score = 0
             dlr_round_score = 0
