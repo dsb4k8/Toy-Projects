@@ -86,6 +86,8 @@ class player:
 
         def is_busted(self):
             return self.total() > 21
+        def black_jacks(self):
+            return self.total() == 21
         def cleanup(self,discard_deck):
             if self.is_busted():
                 for i in self.hand:
@@ -152,6 +154,7 @@ class dealer(player):
                 self.hand = []
 
 
+
         
 
 
@@ -174,9 +177,10 @@ def play():
         p1 = player(play_deck)
         dlr = dealer(play_deck)
         count = 1
-        while True:
+        p1_round_score = 0
 
-            print "__________________________________________________________"
+        while True:
+            print "_NEW_ROUND________________________________________________"
             print 
             print "Play_Deck: {}".format(len(play_deck))
             print "Discarded: {}".format(len(discard_deck.contents))
@@ -184,76 +188,59 @@ def play():
             print"___________________________________________________________"
             print
      #        play = input("Play? Yes(1), No(0) ")
-            # while play:
-                # print "hello"
-            # print "Bye"
+            playing = input("Play Hand? Yes(1), No(0)")
+            while playing != 1 and playing != 0:
+                print "Please enter 1 for 'Yes' or 0 for 'No'"
+                playing = input("Play Hand? Yes(1), No(0)")
+                continue
 
+                
+            if playing == 1:
+                print "Ok"
 
-            count = 1
-
-            
-            if count % 2 == 0:
                 if p1.has_empty_hand():
                     p1.hit()
+                    time.sleep(1)
+                    print "Dealer Delt a {}".format(p1.hand[-1])
+                    print 
                     p1.hit()
+                    time.sleep(1)
+                    print "Dealer Delt a {}".format(p1.hand[-1])
+                    print
                 if dlr.has_empty_hand():
                     dlr.hit()
-                    dlr.hit()
-
-                print "p1 : {}".format(p1)
-                print "DLR: {}".format(dlr.showing_before_play())
-            
-            ## Top of each play
-            
-            print "P1 : {}".format(p1)
-            print "DLR: {}".format(dlr.showing_before_play())
-            hit =  input("HIT?  Yes(1), No(0): ")
-            
-            p1_round_score = 0
-            dlr_round_score = 0
-            if hit:
-                print
-                print "Hit"
-                p1.hit()
-                print "P1 Hand: {}".format(p1.hand)
-                print "P1 Total {}".format(p1.total())
-                p1_round_score = p1.total()
-                if p1.is_busted():
-                    print "Busted"
-                    p1.cleanup(discard_deck)
-                    p1_round_score = 0
-
-                continue
-            else:
-                count += 1
-                print 
-                print "No Hit"
-                print dlr.total()
-                while dlr.total() <= 17:
-                    dlr_round_score = dlr.total()
-
-                    print "DLR Hand: {}".format(dlr.hand)
-                    print "DLR Total {}".format(dlr.total())
-                    dlr.hit()
-
-                    if dlr.is_busted():
-                        dlr.cleanup()
-                        print "dealer busted, You Win!"
-                        dlr_round_score = 0
-
-
-                if p1_round_score > dlr_round_score:
+                    time.sleep(1)
+                    print "Dealer Delt a {}".format(dlr.hand[-1])
                     print 
-                    print"P1 WON {}>{}".format(p1_round_score, dlr_round_score)
+                    dlr.hit()
+                    time.sleep(1)
+                    print "Dealer Delt A Face Down Card}"                    
                     print
-                elif dlr_round_score > p1_round_score:
-                    print
-                    print"DLR WON {}>{}".format(dlr_round_score, p1_round_score)
-                    print
-                    
-                break
 
-            count +=1
+                
+                time.sleep(1)
+                print "Your Hand: {}".format(p1.hand)
+                print "Opponents: {}".format(dlr.showing_before_play())
+
+                hit = input ("Draw Card? Yes(1), No(0): ")
+                while hit != 1 or hit =! 0:
+                    print "Please enter 1 for 'Hit' or 0 for 'Stay'"
+                if hit == 1:
+                    p1.hit()
+                    if p1.black_jacks():
+                        print " You Win! You got a BLACK JACK!"
+                    else if p1.is_busted():
+                        print"You Lost. You Busted"
+
+                    
+                    
+
+
+            else:
+                print "No"
+                break
+        print "Thanks for playing"
+                
 
                 # print "Dog"
                 # count +=1
