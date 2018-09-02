@@ -111,7 +111,7 @@ class dealer(player):
         def __repr__(self):
             return "{}, Total: {}".format(self.hand, self.total())
         def showing_before_play(self):
-            return "{},{}, Showing {}".format(self.hand[:len(self.hand)-1], blocker, self.dealer_total()[0])
+            return "{},{}, Showing A Possible: {}".format(self.hand[:len(self.hand)-1], blocker, self.dealer_total()[0]+ 10)
         def dealer_total(self):
             result = []
             # faces = ["J","Q","K"]
@@ -180,15 +180,17 @@ def play():
         p1_round_score = 0
 
         while True:
-            print "_NEW_ROUND________________________________________________"
-            print 
-            print "Play_Deck: {}".format(len(play_deck))
-            print "Discarded: {}".format(len(discard_deck.contents))
+            while count <= 1:
+                print "_NEW_ROUND________________________________________________"
+                print 
+                print "Play_Deck: {}".format(len(play_deck))
+                print "Discarded: {}".format(len(discard_deck.contents))
 
-            print"___________________________________________________________"
-            print
-     #        play = input("Play? Yes(1), No(0) ")
-            playing = input("Play Hand? Yes(1), No(0)")
+                print"___________________________________________________________"
+                print
+         #        play = input("Play? Yes(1), No(0) ")
+                playing = input("Play Hand? Yes(1), No(0): ")
+                count += 1
             while playing != 1 and playing != 0:
                 print "Please enter 1 for 'Yes' or 0 for 'No'"
                 playing = input("Play Hand? Yes(1), No(0)")
@@ -196,6 +198,7 @@ def play():
 
                 
             if playing == 1:
+                print "_Player's turn_"
                 print "Ok"
 
                 if p1.has_empty_hand():
@@ -219,27 +222,64 @@ def play():
 
                 
                 time.sleep(1)
-                print "Your Hand: {}".format(p1.hand)
-                print "Opponents: {}".format(dlr.showing_before_play())
+                print "Your Hand: {} Total: {} ".format(p1.hand, p1.total())
+                print "Opponents: {} Total: {} ".format(dlr.showing_before_play(), dlr.total())
 
                 hit = input ("Draw Card? Yes(1), No(0): ")
-                while hit != 1 or hit =! 0:
+                while hit != 1 and hit != 0:
                     print "Please enter 1 for 'Hit' or 0 for 'Stay'"
+                    time.sleep(1)
+                    hit = input ("Draw Card? Yes(1), No(0): ")
                 if hit == 1:
                     p1.hit()
                     if p1.black_jacks():
                         print " You Win! You got a BLACK JACK!"
-                    else if p1.is_busted():
-                        print"You Lost. You Busted"
+                        break
+                    elif p1.is_busted():
+                        print "You Drew A {}".format(p1.hand[-1])
+                        time.sleep(1)
+                        print "You Busted."
+                        break
+                        # continue
 
-                    
-                    
+                        print"You Lost. You Busted"
+                    else:
+                        print "You Drew A {}".format(p1.hand[-1])
+                        continue
+                elif hit == 0:
+                    break
 
 
             else:
                 print "No"
                 break
+        print "__Dealer's Turn__"
+        while dlr.total() <= 17:
+            print dlr
+            dlr.hit()
+            print "Dealer hit and got a {}".format(dlr.hand[-1])
+            print "Dealer's hand {}".format(dlr.hand)
+            if dlr.is_busted():
+                time.sleep(1)
+                print "Dealer Busted"
+                print 
+                break
+            else:
+                continue
+ #            else:
+                # continue
+        
+
+        #End game tally
+
+        if p1.total() > dlr.total():
+            print 
+            print "Player 1 won This round"
+        elif dlr.total() > dlr.total():
+            print 
         print "Thanks for playing"
+        
+        
                 
 
                 # print "Dog"
