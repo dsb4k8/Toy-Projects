@@ -275,7 +275,7 @@ def play():
         if p1.total() > dlr.total():
             print 
             print "Player 1 won This round"
-        elif dlr.total() > dlr.total():
+        elif dlr.total() > p1.total():
             print 
         print "Thanks for playing"
         
