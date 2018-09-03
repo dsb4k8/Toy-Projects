@@ -77,6 +77,7 @@ class player:
            return "%s, Total: %d " %(self.hand[:len(self.hand)], self.total())
 
         def total(self):
+            busted = "BUSTED"
             result = 0
             for n in self.hand[:len(self.hand)]:
                 if n.rank == "J" or n.rank == "Q" or n.rank == "K":
@@ -88,8 +89,10 @@ class player:
                         result = result + 1
                 else:
                     result = result + int(n.rank)
-            return result
-
+            if result > 21:
+                return(result,busted)
+            else:
+                return(result)
         def hit(self):
             
             l = self.hand
@@ -105,11 +108,11 @@ class player:
         def black_jacks(self):
             return self.total() == 21
         def cleanup(self,discard_deck):
-            if self.is_busted():
-                for i in self.hand:
-                    discard_deck.contents.append(i)
-                print "Discard deck: {}".format(discard_deck.contents)
+            for i in self.hand:
+                discard_deck.contents.append(i)
+                # print "Discard deck: {}".format(discard_deck.contents)
                 self.hand = []
+
         def has_empty_hand(self):
             return self.hand == []
         def can_hit(self):
@@ -127,7 +130,7 @@ class dealer(player):
         def __repr__(self):
             return "{}, Total: {}".format(self.hand, self.total())
         def showing_before_play(self):
-            return "{},{}, Showing A Possible: {}".format(self.hand[:len(self.hand)-1], blocker, self.dealer_total()[0]+ 10)
+            return "{},{}, Showing A Possible: {}".format(self.hand[0], blocker, self.dealer_total()[0]+ 10)
         def dealer_total(self):
             result = []
             for card in self.hand:
@@ -145,6 +148,7 @@ class dealer(player):
             return result
 
         def total(self):
+            busted = "BUSTED"
             result = 0
             for n in self.hand[:len(self.hand)]:
                 if n.rank == "J" or n.rank == "Q" or n.rank == "K":
@@ -156,16 +160,22 @@ class dealer(player):
                         result = result + 1
                 else:
                     result = result + int(n.rank)
-            return result
+            if result > 21:
+                return(result,busted)
+            else:
+                return(result)
+
+            
         def can_hit(self):
             return self.total() < 17
 
         def cleanup(self,discard_deck):
-            if self.is_busted():
                 for i in self.hand:
                     discard_deck.contents.append(i)
                 # print "Discard deck: {}".format(discard_deck.contents)
                 self.hand = []
+
+
 
 
 
@@ -197,7 +207,7 @@ def play():
             while count <= 1:
                 print "_NEW_ROUND________________________________________________"
                 print 
-                print "Play_Deck: {}".format(len(play_deck))
+                print "Play_Deck: {}".format(len(play_deck.contents))
                 print "Discarded: {}".format(len(discard_deck.contents))
 
                 print"___________________________________________________________"
@@ -243,6 +253,30 @@ def play():
                 print "Your Hand: {} Total: {} ".format(p1.hand, p1.total())
                 print "Opponents: {}".format(dlr.showing_before_play())
 
+                if p1.black_jacks():
+                    print
+                    print "Nice Black Jack! You Win"
+                    print
+                    pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 hit = input ("Draw Card? Yes(1), No(0): ")
                 while hit != 1 and hit != 0:
                     print "Please enter 1 for 'Hit' or 0 for 'Stay'"
@@ -253,6 +287,7 @@ def play():
                     print
                     time.sleep(1)
                     if p1.black_jacks():
+                        print "You Drew A {}".format(p1.hand[-1])
                         print " You Win! You got a BLACK JACK!"
                         pass
                     elif p1.is_busted():
@@ -275,14 +310,15 @@ def play():
             time.sleep(1)
             while dlr.total() <= 17:
                 print 
-                print dlr
+                print "Dealer's hand {}".format(dlr.hand)
                 dlr.hit()
+                print
                 print "Dealer hit and got a {}".format(dlr.hand[-1])
                 time.sleep(1)
                 print "Dealer's hand {}".format(dlr.hand) 
-                if dlr.is_busted():
+                if dlr.is_busted() and not p1.is_busted():
                     time.sleep(1)
-                    print "You won! Dealer Busted With {}".format(dlr.total())
+                    print "You won! Dealer Busted With {}".format(dlr.total()[0])
                     print 
                     pass
                 else:
@@ -314,25 +350,30 @@ def play():
                 print
             
             # Hand is spent
+
+            busted = "BUSTED"
+
             print "Player's Final: {}".format(p1.total())
             print "Dealer's Final: {}".format(dlr.total())
             print 
 
-            p1.cleanup(discard_deck)
-            dlr.cleanup(discard_deck)
-            play_deck.shuffle()
-            print
+
         
             playing = input("Play Another Hand? Yes(1), No(0): ")
 
             if playing  == 1:
-                print "Alright.. new round"
+                print "_______________________________________________"
+                print "Alright.. New Round"
+                p1.cleanup(discard_deck)
+                dlr.cleanup(discard_deck)
+                play_deck.shuffle()
+                print
                 continue
             elif playing == 0:
                 break
 
-
-        print "Thanks for playing"
+        print
+        print "Thanks for playing! "
 
         
             
