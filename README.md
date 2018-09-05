@@ -43,7 +43,19 @@
       Ask if player would like to play another hand
       if yes: continue game
       if no:  greet player and break
-        
-      
+##### Face Detection Alerts
+###### Quick Definition:
+           - A Haar Cascade is basically a classifier which is used to detect particular objects from the source. The haarcascade_frontalface_default.xml is a haar cascade designed by OpenCV to detect the frontal face. This haar cascade is available on their github.
+###### High Level Logic:
+            - Feature recognition can be achieved very easily with OpenCV's built in methods
+            - If a face is detected:
+                  - Save file locally
+                  - connect to smtp server
+                  - authenticate through provider
+                  - Send email with file attachment to specified email
+                  - alert owner that face has been detected in device
+
+            
+
       
 
