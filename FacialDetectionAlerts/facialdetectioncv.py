@@ -11,6 +11,13 @@ from email.MIMEBase import MIMEBase
 from email import encoders
 import cv2
 import time
+import sys
+import os
+
+# The following command must be included to reroute the webcam functions to Pi Cam attachment
+sys.path.append('/usr/local/lib/python2.7/site-packages')
+
+os.system("sudo modprobe bcm2835-v4l2")
 
 
 # This Script is written as a proof of concept. 
@@ -40,17 +47,18 @@ if __name__=="__main__":
     
 
 
-    face_cascade = cv2.CascadeClassifier("/YOUR/PATH/TO/haarcascades/haarcascade_frontalface_default.xml")
+    face_cascade = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
 
-    eye_cascade  = cv2.CascadeClassifier("/YOUR/PATH/TO/haarcascades/haarcascade_eye.xml")
+    eye_cascade  = cv2.CascadeClassifier("haarcascade_eye.xml")
 
-    smile_cascade = cv2.CascadeClassifier("/YOUR/PATH/TO/haarcascades/haarcascade_.xml")
+    smile_cascade = cv2.CascadeClassifier("haarcascade_smile.xml")
     
 
     # START CAPUTRE
     cap = cv2.VideoCapture(0)
     
     # LISTEN, LOCATE, AND SAVE FACIAL STRUCTURES
+    
     while True:
         ret, img = cap.read()
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -61,7 +69,7 @@ if __name__=="__main__":
             roi_color= img[y:y+h, x:x+w]
 
             # To Save in same directory, leave as file name only
-            cv2.imwrite("result.jpg", img)
+            cv2.imwrite("Capture/result.jpg", img)
             break
             
             eyes = eye_cascade.detectMultiScale(roi_gray)
@@ -76,7 +84,7 @@ if __name__=="__main__":
             break
 
     # Input a second location to save image file
-    cv2.imwrite("/WHERE/TO/SAVE/A/SECOND/COPY/CALLED/this_is_an_example.jpg", img)
+    cv2.imwrite("last_capture.jpg",  img)
     cap.release()
     cv2.destroyAllWindows
 
@@ -100,13 +108,14 @@ if __name__=="__main__":
     print 
     
     # For security, I have opted to make this an open variable
+    #Note: This may require an "Application Password" if you are connecting to gmail... google it for instructions
     emailLogin = raw_input("Please Enter Your Email Address: ")
     emailPassword = raw_input("Please Enter Your Password: ")
     
     # WHOLE PATH
-    attachment = open("/PATH/TO/YOUR/FILENAME.EXTENSION", "rb")
+    attachment = open("last_capture.jpg", "rb")
     # ONLY FILE
-    filename = "FILENAME.EXTENSION"
+    filename = "last_capture.jpg"
 
     part = MIMEBase("application", "octet-stream")
     part.set_payload((attachment).read())
@@ -119,9 +128,10 @@ if __name__=="__main__":
 
     print eobj.login(emailLogin, emailPassword)
 
-    print "Face Detected: {}".format(time.now())
+    print "Face Detected"
     eobj.sendmail(emailLogin, emailLogin, text)
     print "Notifications and Attachments Have Been Sent To The Owner Of This Computer."
     print "If you would like to email the owner, directly, please email: {} ".format(emailLogin)
     print"_________________________________________"
+
 
