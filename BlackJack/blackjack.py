@@ -38,6 +38,7 @@ import time
 # print thank you for playing
 
 #make a deck of cards
+
 blocker = "***************"
 class card:
 	rank = "X"
@@ -66,7 +67,6 @@ class stack:
         def is_full(self):
            return self.size == 52
                 
-
 class player:
 	def __init__(self, WholeDeck):
                 self.WD = WholeDeck
@@ -175,15 +175,7 @@ class dealer(player):
                 # print "Discard deck: {}".format(discard_deck.contents)
                 self.hand = []
 
-
-
-
-
-        
-
-
 def play():
-
         ranks = [2,3,4,5,6,7,8,9,10,"J","Q","K","A"]
         Suits = ["Hearts","Clubs","Diamonds","Spades"]
 	cardlist = []
@@ -220,7 +212,6 @@ def play():
                 playing = input("Play Hand? Yes(1), No(0)")
                 continue
 
-                
             if playing == 1:
                 print 
                 print 
@@ -259,24 +250,6 @@ def play():
                     print
                     pass
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                 hit = input ("Draw Card? Yes(1), No(0): ")
                 while hit != 1 and hit != 0:
                     print "Please enter 1 for 'Hit' or 0 for 'Stay'"
@@ -302,10 +275,6 @@ def play():
                 elif hit == 0:
                     pass
 
-
-           #  else:
-                # print "No"
-                # break
             print "__Dealer's Turn__"
             time.sleep(1)
             while dlr.total() <= 17:
@@ -357,8 +326,6 @@ def play():
             print "Dealer's Final: {}".format(dlr.total())
             print 
 
-
-        
             playing = input("Play Another Hand? Yes(1), No(0): ")
 
             if playing  == 1:
@@ -374,8 +341,6 @@ def play():
 
         print
         print "Thanks for playing! "
-
-        
             
 if __name__=="__main__":
 
