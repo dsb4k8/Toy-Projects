@@ -14,18 +14,15 @@ import time
 import sys
 import os
 
-# The following command must be included to reroute the webcam functions to Pi Cam attachment
+
 sys.path.append('/usr/local/lib/python2.7/site-packages')
 
 os.system("sudo modprobe bcm2835-v4l2")
-
-
 # This Script is written as a proof of concept. 
 
 # - When this script is ran, the built-in camera should turn on and listen for a face. When a face is detected, an image is captured, saved locally, and emailed to the specified email address.
 
 # - I have included implicit substitution instructions in the file path parameters. DO NOT RUN WITH UPDATING CAPITALIZED INFORMATION in script.
-
 # - High level Flow:
     # 1) Load haarcascade files
     # 2) Implement face detection usign files as reference
@@ -49,9 +46,9 @@ if __name__=="__main__":
 
     face_cascade = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
 
-    eye_cascade  = cv2.CascadeClassifier("haarcascade_eye.xml")
+#    eye_cascade  = cv2.CascadeClassifier("haarcascade_eye.xml")
 
-    smile_cascade = cv2.CascadeClassifier("haarcascade_smile.xml")
+#    smile_cascade = cv2.CascadeClassifier("haarcascade_smile.xml")
     
 
     # START CAPUTRE
@@ -61,8 +58,13 @@ if __name__=="__main__":
     
     while True:
         ret, img = cap.read()
+        #Low RAM: Reducing size of frame image to speed up Frame Rate/ reduce computational expendature
+	ret = cap.set(cv2.cv.CV_CAP_PROP_FRAME_WIDTH,320)
+	ret = cap.set(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT,240)
+	#my case is flipped 180 (upside down)
+	img = cv2.flip(img, 0)
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        faces = face_cascade.detectMultiScale(gray, 1.3, 5)
+        faces = face_cascade.detectMultiScale(gray,  1.2, 5)
         for (x,y,w,h) in faces:
             cv2.rectangle(img,(x,y), (x+w, y+h), (255,0,0), 2)
             roi_gray = gray[y:y+h, x:x+w]
@@ -71,14 +73,12 @@ if __name__=="__main__":
             # To Save in same directory, leave as file name only
             cv2.imwrite("Capture/result.jpg", img)
             break
-            
-            eyes = eye_cascade.detectMultiScale(roi_gray)
-
-            for (ex,ey,ew,eh) in eyes:
-                cv2.rectangle(roi_color, (ex, ey), (ex+ew, ey+eh), (0,255,0),2)
 
         cv2.imshow("img", img)
-        
+	#Quick kill if face is detected from haarcascade
+	if faces != ():
+	    break
+        #Manual kill if face is not detected
         k = cv2.waitKey(30) & 0xff
         if k == 27:
             break
@@ -108,9 +108,9 @@ if __name__=="__main__":
     print 
     
     # For security, I have opted to make this an open variable
-    #Note: This may require an "Application Password" if you are connecting to gmail... google it for instructions
-    emailLogin = raw_input("Please Enter Your Email Address: ")
-    emailPassword = raw_input("Please Enter Your Password: ")
+    #NOTE THIS SCRIPT WILL RETURN AN ERROR OF EMAILLOGIN AND EMAILPASSWORD ARE NOT UPDATED 
+    emailLogin = "ChangeThisStringToYourEmail@gmail.com"
+    emailPassword = "AndHereGoesYourPasswordForGmail.com"
     
     # WHOLE PATH
     attachment = open("last_capture.jpg", "rb")
@@ -133,5 +133,4 @@ if __name__=="__main__":
     print "Notifications and Attachments Have Been Sent To The Owner Of This Computer."
     print "If you would like to email the owner, directly, please email: {} ".format(emailLogin)
     print"_________________________________________"
-
 
