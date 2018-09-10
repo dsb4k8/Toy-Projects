@@ -53,7 +53,9 @@
                   - connect to smtp server
                   - authenticate through provider
                   - Send email with file attachment to specified email
-                  - alert owner that face has been detected in device
+                  - alert owner that face has been detected in device   
+ ###### Raspberry Pi Integration
+             - More news coming soon...
 
             
 
