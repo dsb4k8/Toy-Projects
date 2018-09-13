@@ -36,7 +36,6 @@ import time
     # else:
         # pass
 # print thank you for playing
-
 #make a deck of cards
 
 blocker = "***************"
