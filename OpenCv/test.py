@@ -49,6 +49,8 @@ while True:
     line_image = np.copy(altered) * 0
     lines = cv2.HoughLinesP(edges, rho, theta, threshold, np.array([]),
                     min_line_length, max_line_gap)
+    print "shape of line: {}".format(lines.shape)
+
     print
     print type(lines)
     print
