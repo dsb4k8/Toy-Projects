@@ -10,7 +10,7 @@ from matplotlib import dateutil
 orb = cv2.ORB_create()
 
 # cap = cv2.VideoCapture('Drone flight over Skid Row LA - See what happens!.mp4')
-cap = cv2.VideoCapture("Relaxing Ride to Acapulco Mexico  G310R  390 Duke.mp4")
+cap = cv2.VideoCapture("Drone flight over Skid Row LA - See what happens!.mp4")
 
 size = (int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)),
         int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT)))
@@ -19,7 +19,7 @@ fourcc = cv2.VideoWriter_fourcc(*"H264")
 
 out = cv2.VideoWriter()
 
-success = out.open('output.avi',fourcc,20.0,(size[0], size[1]))
+success = out.open('output3.avi',fourcc,20.0,(size[0], size[1]))
 fr = 0
 
 while True:
@@ -49,7 +49,6 @@ while True:
     line_image = np.copy(altered) * 0
     lines = cv2.HoughLinesP(edges, rho, theta, threshold, np.array([]),
                     min_line_length, max_line_gap)
-    print "shape of line: {}".format(lines.shape)
 
     print
     print type(lines)
